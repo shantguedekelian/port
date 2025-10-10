@@ -6,6 +6,74 @@ body {
 }
 
 a { 
-    color:black;
     text-decoration:none;
+}
+
+body {
+    max-width: 100ch;
+    padding: 1ch;
+}
+
+ul.navigation, li.navigation {
+    display: contents;
+}
+
+nav {
+    display: flex;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: oklch(80% 3% 200);
+    margin-bottom: 2%;
+}
+
+nav a {
+    flex: 1;
+    text-decoration: none;
+    color:inherit;
+    text-align: center;
+    margin-bottom: 0%;
+}
+
+a.current{
+    border-bottom-width: 0.4em;
+    border-bottom-style: solid;
+    border-bottom-color: oklch(80% 3% 200);
+    padding-bottom: 1%;
+}
+
+html {
+  --color-accent: oklch(65% 50% 0);
+  accent-color: var(--color-accent);
+}
+
+a:hover {
+    background-color: oklch(from var(--color-accent) 95% 5% h);
+    border-bottom-width: 0.4em;
+    border-bottom-style: solid;
+    border-bottom-color:var(--color-accent);
+}
+
+label {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+}
+
+form {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1em;
+}
+
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    gap: 1em;
+}
+
+article.proj-page {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+    gap: 1em;
 }

@@ -14,26 +14,34 @@
         Contact me using the sheet below.
     </p>
     <nav>
-    <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../projects/index.html">Projects</a></li>
+    <ul class="navigation">
+        <li class="navigation"><a href="../index.html">Home</a></li>
+        <li class="navigation"><a href="../projects/index.html">Projects</a></li>
+        <li class="navigation"><a class = "current" href="index.html">Contact</a></li>
+        <li class="navigation"><a href="https://github.com/shantguedekelian" target="_blank">Github</a></li>
+        <li class="navigation"><a href="../resume.html">Resume</a></li>
     </ul>
     </nav>
+
+    <br>
 
     <form action="mailto:sguedekelian@ucsd.edu" method="POST" enctype="text/plain">
         <label>
             Email
             <input name="email" type="email">
         </label>
+        <br>
         <label>
             Subject
             <input name="subject">
         </label>
+        <br>
         <label>
             Body
             <textarea name="body">  
             </textarea>
         </label>
+        <br>
         <button>
             Submit
         </button>
