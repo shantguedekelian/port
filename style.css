@@ -21,6 +21,7 @@ ul.navigation, li.navigation {
 }
 
 nav {
+    --border-color: oklch(50% 10% 200 / 40%);
     display: flex;
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -39,15 +40,18 @@ nav a {
 a.current{
     border-bottom-width: 0.4em;
     border-bottom-style: solid;
-    border-bottom-color: oklch(80% 3% 200);
+    border-bottom-color: var(--border-color);
     padding-bottom: 1%;
+    background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+
 }
 
 html {
-    --color-accent: oklch(65% 50% 0);
     accent-color: var(--color-accent);
     width: 100%;
     height: 100%;
+    color-scheme: dark;
+    border-bottom-color: var(--border-color);
 }
 
 a:hover {
@@ -114,4 +118,11 @@ ul {
 
 .personalinfo {
     text-align: center;
+}
+
+.color-scheme {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    font-size: 80%;
 }
