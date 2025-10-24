@@ -1,21 +1,21 @@
 [
 	{
-		"title": "HIIIII ipsum dolor sit.",
-		"year": "2024",
+		"title": "Spotify Mood Explorer",
+		"year": "2025",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam dolor quos, quod assumenda explicabo odio, nobis ipsa laudantium quas eum veritatis ullam sint porro minima modi molestias doloribus cumque odit."
+		"description": "Built an interactive web dashboard that clustered 170K+ Spotify tracks into mood-based groups using machine learning (PCA + K-Means) and integrated the Spotify API for real-time song exploration and visualization."
 	},
 	{
-		"title": "Architecto minima sed omnis?",
-		"year": "2023",
+		"title": "Exploring Food Trends",
+		"year": "2025",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Est, reiciendis aspernatur debitis maxime et itaque animi sit quod quo, tempore incidunt tempora dignissimos exercitationem enim numquam quam quaerat optio laborum ut unde hic delectus laboriosam? Quasi, cupiditate corporis."
+		"description": "Developed an end-to-end ML pipeline on 83K+ recipes and 230K+ reviews to analyze food trends, predict protein content with regression models (R² = 0.84), and evaluate fairness across dietary groups."
 	},
 	{
-		"title": "Asperiores rem repellendus doloremque.",
-		"year": "2022",
+		"title": "A/B Testing with SQL & Python",
+		"year": "2025",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Eligendi tenetur quae quos recusandae est. Cumque, voluptatem. Quo nihil dignissimos molestiae explicabo praesentium aspernatur debitis, illo rerum possimus quam ducimus earum nulla officiis maiores itaque repellat corporis soluta labore?"
+		"description": "Designed and executed an A/B test analysis using SQL and Python to measure conversion rate differences between page versions, applying statistical hypothesis testing and visualization to determine significance."
 	},
 	{
 		"title": "Laudantium reprehenderit placeat perspiciatis.",
