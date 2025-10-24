@@ -77,3 +77,60 @@ if("colorScheme" in localStorage){
     document.documentElement.style.setProperty('color-scheme', localStorage.colorScheme);
     select.value = localStorage.colorScheme;
 } 
+
+export async function fetchJSON(url) {
+  try {
+    // Fetch the JSON file from the given URL
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching or parsing JSON data:', error);
+  }
+}
+
+export function renderProjects(projects, containerElement, headingLevel = 'h2') {
+  const numProjects = projects.length;
+  const title = document.querySelector('.projects-title');
+  if (title) {
+      title.textContent = `${numProjects} Projects`;
+  } else {
+      console.warn('Element with class ".projects-title" not found.');
+  }
+
+  // 1. Validate the container element
+  if (!containerElement) {
+    console.error('Container element not found!');
+    return;
+  }
+
+  // 2. Clear any existing content
+  containerElement.innerHTML = '';
+
+  // 3. Loop through all projects
+  projects.forEach(project => {
+    // 4. Create an article for each project
+    const article = document.createElement('article');
+
+    // Handle missing data gracefully
+    const title = project.title || 'Untitled Project';
+    const image = project.image || '';
+    const description = project.description || 'No description available.';
+
+    // 5. Add dynamic content (including dynamic heading level)
+    article.innerHTML = `
+      <${headingLevel}>${title}</${headingLevel}>
+      <img src="${image}" alt="${title}">
+      <p>${description}</p>
+    `;
+
+    // 6. Append the article to the container
+    containerElement.appendChild(article);
+  });
+
+  //7. Project counter
+}
+
