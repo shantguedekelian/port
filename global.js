@@ -119,12 +119,14 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     const title = project.title || 'Untitled Project';
     const image = project.image || '';
     const description = project.description || 'No description available.';
+    const year = project.year || 'No year available.';
 
     // 5. Add dynamic content (including dynamic heading level)
     article.innerHTML = `
       <${headingLevel}>${title}</${headingLevel}>
       <img src="${image}" alt="${title}">
       <p>${description}</p>
+      <p>c. ${year}</p>
     `;
 
     // 6. Append the article to the container

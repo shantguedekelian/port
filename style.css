@@ -145,3 +145,10 @@ dd {
   text-align: center;
   margin: 0;
 }
+
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+
+  overflow: visible;
+}
