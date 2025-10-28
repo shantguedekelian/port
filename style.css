@@ -186,3 +186,39 @@ dd {
   border-radius: 3px; /* optional: makes it slightly rounded */
   border: 1px solid #ccc; /* optional: adds a light border */
 }
+
+.searchBar {
+  width: 30em;
+  height: 50px;
+  padding: 0 1em;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 25px;  /* makes it pill-shaped */
+  outline: none;
+  transition: border-color 0.3s ease;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.searchBar:focus {
+  border-color: #0077ff; /* changes color on focus */
+}
+
+path {
+  transition: 300ms;
+  cursor: pointer;
+}
+
+&:has(path:hover) {
+  path:not(:hover) {
+    opacity: 0.5;
+  }
+}
+
+.selected {
+  --color: oklch(60% 45% 0) !important;
+
+  &:is(path) {
+    fill: var(--color);
+  }
+}
