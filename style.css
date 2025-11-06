@@ -226,3 +226,52 @@ path {
 .gridlines {
     opacity: 0.2;
 }
+
+dl.info {
+  display: grid;
+  grid-template-columns: auto 1fr;  /* labels in first col, values in second */
+  gap: 0.25em 1em;                  /* small spacing between rows and cols */
+  margin: 0;                        /* remove default margins */
+  padding: 0;
+  transition-duration: 500ms;
+  transition-property: opacity, visibility;
+}
+
+dl.info[hidden]:not(:hover, :focus-within) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+dl.info dt {
+  font-weight: bold;
+  color: #666;                      /* make labels less prominent */
+  margin: 0;
+}
+
+dl.info dd {
+  margin: 0;                        /* remove default indent/margin */
+  color: white;                      /* make values stand out more */
+}
+
+/* 2️⃣ .tooltip — fix it to the top-left of the viewport */
+.tooltip {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  font-size: 0.9em;
+  pointer-events: none;             /* so it doesn’t block mouse events */
+}
+
+circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+circle:hover {
+  transform: scale(1.5);
+}

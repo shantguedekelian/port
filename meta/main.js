@@ -71,6 +71,8 @@ function renderScatterPlot(data, commits) {
   // Put all the JS code of Steps inside this function
     const width = 1000;
     const height = 600;
+    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+    const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
     const svg = d3
         .select('#chart')
         .append('svg')
@@ -84,17 +86,28 @@ function renderScatterPlot(data, commits) {
         .nice();
 
     const yScale = d3.scaleLinear().domain([0, 24]).range([height, 0]);
+    const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([3, 15]);
+
 
     const dots = svg.append('g').attr('class', 'dots');
 
     dots
         .selectAll('circle')
-        .data(commits)
+        .data(sortedCommits)
         .join('circle')
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
-        .attr('r', 5)
-        .attr('fill', 'steelblue');
+        .attr('r', (d) => rScale(d.totalLines))
+        .attr('fill', 'steelblue')
+        .on('mouseenter', (event, commit) => {
+            renderTooltipContent(commit);
+            updateTooltipVisibility(true);
+            updateTooltipPosition(event);
+        })
+        .on('mouseleave', () => {
+            // TODO: Hide the tooltip
+            updateTooltipVisibility(false);
+        })
 
     const margin = { top: 10, right: 10, bottom: 30, left: 20 };
 
@@ -134,6 +147,36 @@ function renderScatterPlot(data, commits) {
 
     gridlines.call(d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width));
 
+}
+
+function renderTooltipContent(commit) {
+  const link = document.getElementById('commit-link');
+  const date = document.getElementById('commit-date');
+  const time = document.getElementById('commit-time');
+  const author = document.getElementById('commit-author');
+  const linesEdited = document.getElementById('commit-linesEdited');
+
+  if (Object.keys(commit).length === 0) return;
+
+  link.href = commit.url;
+  link.textContent = commit.id;
+  date.textContent = commit.datetime?.toLocaleString('en', {
+    dateStyle: 'full',
+  });
+  time.textContent = commit.time;
+  author.textContent = commit.author;
+  linesEdited.textContent = commit.totalLines;
+}
+
+function updateTooltipVisibility(isVisible) {
+  const tooltip = document.getElementById('commit-tooltip');
+  tooltip.hidden = !isVisible;
+}
+
+function updateTooltipPosition(event) {
+  const tooltip = document.getElementById('commit-tooltip');
+  tooltip.style.left = `${event.clientX}px`;
+  tooltip.style.top = `${event.clientY}px`;
 }
 
 let data = await loadData();
