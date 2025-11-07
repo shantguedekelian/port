@@ -67,6 +67,8 @@ function renderCommitInfo(data, commits) {
   dl.append('dd').text(d3.group(data, d => d.file).size);
 }
 
+
+let xScale, yScale;
 function renderScatterPlot(data, commits) {
   // Put all the JS code of Steps inside this function
     const width = 1000;
@@ -79,13 +81,13 @@ function renderScatterPlot(data, commits) {
         .attr('viewBox', `0 0 ${width} ${height}`)
         .style('overflow', 'visible');
 
-    const xScale = d3
+    xScale = d3
         .scaleTime()
         .domain(d3.extent(commits, (d) => d.datetime))
         .range([0, width])
         .nice();
 
-    const yScale = d3.scaleLinear().domain([0, 24]).range([height, 0]);
+    yScale = d3.scaleLinear().domain([0, 24]).range([height, 0]);
     const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([3, 15]);
 
 
@@ -149,6 +151,33 @@ function renderScatterPlot(data, commits) {
 
 }
 
+function createBrushSelector(svg) {
+  svg.call(d3.brush());
+  // Raise dots and everything after overlay
+  svg.selectAll('.dots, .overlay ~ *').raise();
+  svg.call(d3.brush().on('start brush end', brushed));
+}
+
+function brushed(event) {
+  const selection = event.selection;
+  d3.selectAll('circle').classed('selected', (d) =>
+    isCommitSelected(selection, d),
+  );
+}
+
+function isCommitSelected(selection, commit) {
+  if (!selection) {
+    return false;
+  }
+  // TODO: return true if commit is within brushSelection
+  // and false if not
+  const [x0, x1] = selection.map((d) => d[0]); 
+  const [y0, y1] = selection.map((d) => d[1]); 
+  const x = xScale(commit.datetime); 
+  const y = yScale(commit.hourFrac); 
+  return x >= x0 && x <= x1 && y >= y0 && y <= y1;  
+}
+
 function renderTooltipContent(commit) {
   const link = document.getElementById('commit-link');
   const date = document.getElementById('commit-date');
@@ -184,4 +213,4 @@ let commits = processCommits(data);
 
 renderCommitInfo(data, commits);
 renderScatterPlot(data, commits);
-
+createBrushSelector(d3.select('svg'));
