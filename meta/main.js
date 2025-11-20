@@ -296,6 +296,7 @@ function onTimeSliderChange() {
     let filteredData = data.filter((d) => (new Set(filteredCommits.map(c => c.id))).has(d.commit));
     updateScatterPlot(data, filteredCommits);
     updateCommitInfo(filteredData, filteredCommits);
+    updateFileDisplay(filteredCommits);
   });
 
 }
@@ -357,4 +358,45 @@ function updateScatterPlot(data, commits) {
 function updateCommitInfo(data, commits) {
   d3.select('#stats').selectAll('*').remove();
   renderCommitInfo(data, commits);
+}
+
+function updateFileDisplay(filteredCommits) {
+  let lines = filteredCommits.flatMap((d) => d.lines);
+  let colors = d3.scaleOrdinal(d3.schemeTableau10);
+  let files = d3
+    .groups(lines, (d) => d.file)
+    .map(([name, lines]) => {
+      return { name, lines };
+    })
+    .sort((a, b) => b.lines.length - a.lines.length);
+
+
+  let filesContainer = d3
+    .select('#files')
+    .selectAll('div')
+    .data(files, (d) => d.name)
+    .join(
+      // This code only runs when the div is initially rendered
+      (enter) =>
+        enter.append('div').call((div) => {
+          div.append('dt').append('code');
+          div.append('dd');
+        }),
+    );
+  
+
+  // This code updates the div info
+  filesContainer.select('dt')
+    .html(d => `
+      <code>${d.name}</code>
+      <small>${d.lines.length} lines</small>
+    `);
+
+  filesContainer
+    .select('dd')
+    .selectAll('div')
+    .data((d) => d.lines)
+    .join('div')
+    .attr('class', 'loc')
+    .attr('style', (d) => `--color: ${colors(d.type)}`);
 }
