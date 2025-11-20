@@ -36,6 +36,41 @@
         </label>
     </div>
 
+    <div id="scrolly-1">
+        <div id="scatter-story"></div>
+            <div id="scatter-plot">
+
+                <div id="chart"></div>
+
+                <dl id="commit-tooltip" class="info tooltip" hidden>
+                <dt>Commit</dt>
+                <dd>
+                    <a href="" id="commit-link" target="_blank"></a>
+                </dd>
+
+                <dt>Date</dt>
+                <dd id="commit-date"></dd>
+
+                <!-- Add: Time, author, lines edited -->
+                <dt>Time</dt>
+                <dd id="commit-time"></dd>
+
+                <dt>Author</dt>
+                <dd id="commit-author"></dd>
+
+                <dt>Lines Edited</dt>
+                <dd id="commit-linesEdited"></dd>
+                </dl>
+
+                <p id="selection-count">No commits selected</p>
+
+            </div>
+    </div>
+
+
+    <dl id="language-breakdown" class="stats"></dl>
+
+    
     <dl id="files">
     <!-- we want the following structure for each file:
     <div>
@@ -46,34 +81,5 @@
     </div>
     -->
     </dl>
-
-    <div id="chart"></div>
-
-    <dl id="commit-tooltip" class="info tooltip" hidden>
-    <dt>Commit</dt>
-    <dd>
-        <a href="" id="commit-link" target="_blank"></a>
-    </dd>
-
-    <dt>Date</dt>
-    <dd id="commit-date"></dd>
-
-    <!-- Add: Time, author, lines edited -->
-    <dt>Time</dt>
-    <dd id="commit-time"></dd>
-
-    <dt>Author</dt>
-    <dd id="commit-author"></dd>
-
-    <dt>Lines Edited</dt>
-    <dd id="commit-linesEdited"></dd>
-    </dl>
-
-    <p id="selection-count">No commits selected</p>
-
-    <dl id="language-breakdown" class="stats"></dl>
-
-    
-    
 </body>
 </html>
