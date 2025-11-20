@@ -16,6 +16,8 @@
     <p>
         This page contains meta information about the website.
     </p>
+
+
     <div class="meta-content">
         <h2>Website Overview</h2>
         <p>This website showcases my projects, skills, and contact information. It is built using
@@ -26,6 +28,14 @@
     </div>
 
     <h2>Commits by time of day</h2>
+
+    <div id="slider-stats">
+        <label>Shows Commits Until:
+            <input type="range" id="commit-progress" min="0" max="100" value="100">
+            <time id="slider-time"></time>
+        </label>
+    </div>
+
     <div id="chart"></div>
 
     <dl id="commit-tooltip" class="info tooltip" hidden>
@@ -52,5 +62,7 @@
 
     <dl id="language-breakdown" class="stats"></dl>
 
+    
+    
 </body>
 </html>

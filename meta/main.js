@@ -1,6 +1,5 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 
-
 async function loadData() {
   const data = await d3.csv('loc.csv', (row) => ({
     ...row,
@@ -95,7 +94,7 @@ function renderScatterPlot(data, commits) {
 
     dots
         .selectAll('circle')
-        .data(sortedCommits)
+        .data(sortedCommits, (d) => d.id)
         .join('circle')
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
@@ -139,12 +138,14 @@ function renderScatterPlot(data, commits) {
     svg
     .append('g')
     .attr('transform', `translate(0, ${usableArea.bottom})`)
+    .attr('class', 'x-axis') // new line to mark the g tag
     .call(xAxis);
 
     // Add Y axis
     svg
     .append('g')
     .attr('transform', `translate(${usableArea.left}, 0)`)
+    .attr('class', 'y-axis') // just for consistency
     .call(yAxis);
 
     gridlines.call(d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width));
@@ -263,3 +264,97 @@ let commits = processCommits(data);
 renderCommitInfo(data, commits);
 renderScatterPlot(data, commits);
 createBrushSelector(d3.select('svg'));
+
+
+// scrolling story thing
+let commitProgress = 100;
+
+let timeScale = d3
+  .scaleTime()
+  .domain([
+    d3.min(commits, (d) => d.datetime),
+    d3.max(commits, (d) => d.datetime),
+  ])
+  .range([0, 100]);
+
+
+let commitSlider = document.getElementById('commit-progress');
+let commitTime = document.getElementById('slider-time');
+let commitMaxTime;
+commitTime.textContent = d3.max(commits, (d) => d.datetime).toLocaleDateString();
+
+let filteredCommits = commits;
+
+function onTimeSliderChange() {
+    commitSlider.addEventListener('input', (event) => {
+    commitProgress = event.target.value;
+    commitMaxTime = timeScale.invert(commitProgress);
+    commitTime.textContent = commitMaxTime.toLocaleDateString();
+
+    filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+    console.log(filteredCommits);
+    let filteredData = data.filter((d) => (new Set(filteredCommits.map(c => c.id))).has(d.commit));
+    updateScatterPlot(data, filteredCommits);
+    updateCommitInfo(filteredData, filteredCommits);
+  });
+
+}
+
+onTimeSliderChange();
+
+function updateScatterPlot(data, commits) {
+  const width = 1000;
+  const height = 600;
+  const margin = { top: 10, right: 10, bottom: 30, left: 20 };
+  const usableArea = {
+    top: margin.top,
+    right: width - margin.right,
+    bottom: height - margin.bottom,
+    left: margin.left,
+    width: width - margin.left - margin.right,
+    height: height - margin.top - margin.bottom,
+  };
+
+  const svg = d3.select('#chart').select('svg');
+
+  xScale = xScale.domain(d3.extent(commits, (d) => d.datetime));
+
+  const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([2, 30]);
+
+  const xAxis = d3.axisBottom(xScale);
+
+
+  // CHANGE: we should clear out the existing xAxis and then create a new one.
+  const xAxisGroup = svg.select('g.x-axis');
+  xAxisGroup.selectAll('*').remove();
+  xAxisGroup.call(xAxis);
+
+  const dots = svg.select('g.dots');
+
+  const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+  dots
+    .selectAll('circle')
+    .data(sortedCommits, (d) => d.id)
+    .join('circle')
+    .attr('cx', (d) => xScale(d.datetime))
+    .attr('cy', (d) => yScale(d.hourFrac))
+    .attr('r', (d) => rScale(d.totalLines))
+    .attr('fill', 'steelblue')
+    .style('fill-opacity', 0.7) // Add transparency for overlapping dots
+    .on('mouseenter', (event, commit) => {
+      d3.select(event.currentTarget).style('fill-opacity', 1); // Full opacity on hover
+      renderTooltipContent(commit);
+      updateTooltipVisibility(true);
+      updateTooltipPosition(event);
+    })
+    .on('mouseleave', (event) => {
+      d3.select(event.currentTarget).style('fill-opacity', 0.7);
+      updateTooltipVisibility(false);
+    });
+}
+
+function updateCommitInfo(data, commits) {
+  d3.select('#stats').selectAll('*').remove();
+  renderCommitInfo(data, commits);
+}

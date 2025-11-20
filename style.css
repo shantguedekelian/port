@@ -270,6 +270,9 @@ circle {
   transition: 200ms;
   transform-origin: center;
   transform-box: fill-box;
+    @starting-style {
+    r: 0;
+  }
 }
 
 circle:hover {
@@ -292,4 +295,26 @@ circle.selected {
   stroke-opacity: 0.7;
   stroke-dasharray: 5 3;
   animation: marching-ants 2s linear infinite;
+}
+
+#slider-stats {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+#slider-stats label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#slider-time {
+  margin-left: auto;
+}
+
+#commit-progress {
+    width: 300px;   /* or 50%, 100%, etc. */
+    background-color: #0077ff;
 }
